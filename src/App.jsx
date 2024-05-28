@@ -1,20 +1,5 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import './App.css'
-import styled from "styled-components";
-
-
-const Container = styled.div`
-  margin: 200px auto;
-  text-align: center;
-`;
-const Count = styled.div`
-  font-size: 200px;
-`;
-const Btn = styled.button`
-  font-size: 50px;
-  margin: 10px;
-  width: 80px;
-`;
 
 
 function App() {
@@ -32,13 +17,15 @@ function App() {
     setCount(0);
   }
   return (
-    <Container>
-      <Count>{count}</Count>
-      <Btn onClick={addCountHandler}>+</Btn>
-      <Btn onClick={minusCountHandler}>-</Btn>
-      <Btn style={{width: "150px"}} onClick={resetCountHandler}>reset</Btn>
-    </Container>
+    <Fragment>
+      <div className="container">
+        <div className="count">{count}</div>
+        <button className="btn" onClick={addCountHandler}>+</button>
+        <button className="btn" onClick={minusCountHandler}>-</button>
+        <button className="btn" style={{width: "150px"}} onClick={resetCountHandler}>reset</button>
+      </div>
+    </Fragment>
   );
-}
+} 
 
 export default App
