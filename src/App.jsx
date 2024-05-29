@@ -1,31 +1,64 @@
-import { Fragment, useState } from 'react';
-import './App.css'
-
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [input, setInput] = useState("");
+  const [todos, setTodos] = useState([]);
 
-  const addCountHandler = () => {
-    setCount(count + 1);
-  }
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
 
-  const minusCountHandler = () => {
-    setCount(count - 1);
-  }
+  const handleAddTodo = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    const newTodo = {
+      id: Date.now(),
+      text: input,
+      completed: false,
+    };
+    setTodos([...todos, newTodo]);
+    setInput("");
+  };
 
-  const resetCountHandler = () => {
-    setCount(0);
-  }
+  const handleToggleTodo = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo)
+    );
+  };
+
+  const handleDeleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+
   return (
-    <Fragment>
-      <div className="container">
-        <div className="count">{count}</div>
-        <button className="btn" onClick={addCountHandler}>+</button>
-        <button className="btn" onClick={minusCountHandler}>-</button>
-        <button className="btn" style={{width: "150px"}} onClick={resetCountHandler}>reset</button>
-      </div>
-    </Fragment>
+    <>
+      <h1>할일 목록</h1>
+      <form onSubmit={handleAddTodo}>
+        <input
+          type="text"
+          value={input}
+          onChange={handleInputChange}
+          placeholder="할 일을 적어주세요."
+        />
+        <button type="submit">추가</button>
+      </form>
+      <ul>
+        {todos.map((todo) => (
+          <li
+            key={todo.id}
+            style={{ textDecoration: todo.completed ? "line-though" : "none" }}
+          >
+            {todo.text}
+            <button onClick={() => handleToggleTodo(todo.id)}>{todo.completed ? "취소" : "완료"}</button>
+            <button onClick={() => handleDeleteTodo(todo.id)}>삭제</button>
+          </li>
+        ))}
+      </ul>
+    </>
   );
-} 
+}
 
-export default App
+export default App;
